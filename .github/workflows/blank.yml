@@ -3,7 +3,7 @@ name: Auto Update 1
  # আপনার পারিবারিক শিক্ষা। 
 on:
   schedule:
-    - cron: '*/10 * * * *'  # fo*ck you xx
+    - cron: '*/15 * * * *'  # fo*ck you xx
 # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 jobs:
