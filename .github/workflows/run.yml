@@ -1,0 +1,47 @@
+name: Auto Update 1
+ # জীবনে শুধু চুরি করা ছাড়া আর কিছু শিখলি না। 
+ # আপনার পারিবারিক শিক্ষা। 
+on:
+  schedule:
+    - cron: '*/59 * * * *'  # fo*ck you xx
+
+jobs:
+  update-files:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Dependencies
+        run: pip install requests
+
+      - name: Unzip Protected Script
+        run: unzip -P ${{ secrets.ZIP_PASSWORD2 }} run.zip
+
+      - name: Run Python Script
+        run: python run.py
+
+      - name: Delete Script After Run
+        run: rm -f run.py  # run.py ফাইল মুছে ফেলবে
+
+      - name: Commit Changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add NS_player.json ALL.m3u
+          git diff --quiet && git diff --staged --quiet || git commit -m "Auto update NS_player.json and ALL.m3u"
+
+      - name: Push Changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
+
+permissions:
+  contents: write
