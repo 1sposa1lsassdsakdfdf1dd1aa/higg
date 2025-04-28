@@ -1,11 +1,10 @@
 name: Auto Update 1
- # জীবনে শুধু চুরি করা ছাড়া আর কিছু শিখলি না। 
- # আপনার পারিবারিক শিক্ষা। 
+
 on:
   schedule:
-    - cron: '*/15 * * * *'  # fo*ck you xx
-# Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+    - cron: '*/20 * * * *'  # প্রতি ১৫ মিনিটে ট্রিগার হবে
+  workflow_dispatch:  # Manually trigger করা যাবে
+
 jobs:
   update-files:
     runs-on: ubuntu-latest
@@ -29,7 +28,7 @@ jobs:
         run: python run.py
 
       - name: Delete Script After Run
-        run: rm -f run.py  # run.py ফাইল মুছে ফেলবে
+        run: rm -f run.py
 
       - name: Commit Changes
         run: |
@@ -43,6 +42,17 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: main
+
+      - name: Sleep for 20 minutes
+        run: |
+          echo "Sleeping for 20 minutes..."
+          sleep 1200  # Sleep for 1200 seconds (20 minutes)
+
+      - name: Trigger Next Run After Sleep
+        run: |
+          echo "Re-triggering workflow after 20 minutes..."
+          # Any other command or action you want to trigger after sleep
+          # You can use GitHub's API or any mechanism to call another workflow if needed.
 
 permissions:
   contents: write
