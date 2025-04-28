@@ -2,12 +2,8 @@ name: Backup Trigger System
 
 on:
   schedule:
-    - cron: '5,30,55 * * * *'
+    - cron: '5,30,55 * * * *'  # প্রতি ঘন্টার 5, 30, 55 মিনিটে চেক করবে
   workflow_dispatch:
-
-permissions:
-  contents: write
-  workflows: write  # <-- এটা নতুন যোগ করতে হবে
 
 jobs:
   backup-trigger:
@@ -46,3 +42,6 @@ jobs:
             echo "Failed to trigger the workflow after $max_retries attempts."
             exit 1
           fi
+
+permissions:
+  contents: write
