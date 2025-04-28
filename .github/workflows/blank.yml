@@ -2,8 +2,8 @@ name: Auto Update 1
 
 on:
   schedule:
-    - cron: '*/20 * * * *'  # প্রতি ১৫ মিনিটে ট্রিগার হবে
-  workflow_dispatch:  # Manually trigger করা যাবে
+    - cron: '0,20,40 * * * *'  # প্রতি ঘন্টার 0, 20, 40 মিনিটে চলবে
+  workflow_dispatch:  # Manually চালানোর অপশন রাখলাম
 
 jobs:
   update-files:
@@ -43,16 +43,14 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: main
 
-      - name: Sleep for 20 minutes
+      - name: Self Trigger After Completion
         run: |
-          echo "Sleeping for 20 minutes..."
-          sleep 1200  # Sleep for 1200 seconds (20 minutes)
-
-      - name: Trigger Next Run After Sleep
-        run: |
-          echo "Re-triggering workflow after 20 minutes..."
-          # Any other command or action you want to trigger after sleep
-          # You can use GitHub's API or any mechanism to call another workflow if needed.
+          echo "Triggering next run manually via API..."
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/auto_update_1.yml/dispatches \
+            -d '{"ref":"main"}'
 
 permissions:
   contents: write
