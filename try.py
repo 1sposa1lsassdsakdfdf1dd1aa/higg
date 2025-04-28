@@ -15,7 +15,7 @@ def fetch_main_domain(url):
 
 # Function to read the user-agent from a file
 def read_user_agent():
-    with open('useragent/useragent.txt', 'r') as file:
+    with open('logo/useragent.txt', 'r') as file:
         return file.read().strip()
 
 # Function to process the m3u playlist
