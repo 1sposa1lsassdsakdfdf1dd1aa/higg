@@ -3,7 +3,7 @@ name: Auto Update 1
  #এটা আপনার পারিবারিক শিক্ষা।
 on:
   schedule:
-    - cron: '*/15 * * * *'  # Every 15 minutes
+    - cron: '*/25 * * * *'  # Every 15 minutes
   workflow_dispatch:
 
 jobs:
