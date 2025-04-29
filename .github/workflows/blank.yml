@@ -1,9 +1,10 @@
 name: Auto Update 1
-
+# জীবনে শুধু চুরি করা ছাড়া আর কিছু শিখলি না। 
+ #এটা আপনার পারিবারিক শিক্ষা।
 on:
   schedule:
-    - cron: '0,20,40 * * * *'  # প্রতি ঘন্টার 0, 20, 40 মিনিটে চলবে
-  workflow_dispatch:  # Manually চালানোর অপশন রাখলাম
+    - cron: '*/15 * * * *'  # Every 15 minutes
+  workflow_dispatch:
 
 jobs:
   update-files:
@@ -28,7 +29,8 @@ jobs:
         run: python run.py
 
       - name: Delete Script After Run
-        run: rm -f run.py
+        if: always()
+        run: rm -f run.py  # run.py
 
       - name: Commit Changes
         run: |
@@ -42,15 +44,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: main
-
-      - name: Self Trigger After Completion
-        run: |
-          echo "Triggering next run manually via API..."
-          curl -X POST \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/${{ github.repository }}/actions/workflows/auto_update_1.yml/dispatches \
-            -d '{"ref":"main"}'
 
 permissions:
   contents: write
